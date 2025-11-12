@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8ff4ca3d296d55d489dcff238f8a710c
+guid: 2927cf8848b54e548a9a691ceb8b3a6c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1460582168874180228
-    second: walking-back-3_0
+      213: -4990133290681421137
+    second: Jab1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: walking-back-3_0
+      name: Jab1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 0
-        width: 91
-        height: 103
+        width: 62
+        height: 94
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 48ed30d7eb7054410800000000000000
-      internalID: 1460582168874180228
+      spriteID: fa23513063c7fbab0800000000000000
+      internalID: -4990133290681421137
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      walking-back-3_0: 1460582168874180228
+      Jab1_0: -4990133290681421137
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

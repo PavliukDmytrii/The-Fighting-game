@@ -24,15 +24,13 @@ public class PlayerController : MonoBehaviour
     private InputSystem_Actions controls;
     private Vector2 moveInput;
     private Animator anim;
-    
-    // This is now the "master" direction. It will NOT change unless the player is flipped (e.g., by crossing up)
     private bool isFacingRight = true; 
-    
     private bool canJump = true; 
 
     // --- We need to store the specific actions ---
     private InputAction moveAction;
     private InputAction jumpAction;
+    private InputAction attackAction; // <-- ADD THIS
 
     void Awake()
     {
@@ -45,25 +43,30 @@ public class PlayerController : MonoBehaviour
             // Player 1 (Ryu)
             moveAction = controls.Player.Move;
             jumpAction = controls.Player.Jump;
+            attackAction = controls.Player.Attack; // <-- ADD THIS
             controls.Player.Enable();
-            isFacingRight = true; // Player 1 starts facing right
+            isFacingRight = true; 
         }
         else // if playerIndex is 1 (or anything else)
         {
             // Player 2 (Dee Jay)
             moveAction = controls.Player2.Move;
             jumpAction = controls.Player2.Jump;
+            attackAction = controls.Player2.Attack; // <-- ADD THIS
             controls.Player2.Enable();
-            isFacingRight = false; // Player 2 starts facing left
+            isFacingRight = false; 
         }
     }
 
-    // OnEnable/OnDisable are the same
     void OnEnable()
     {
         if (jumpAction != null)
         {
             jumpAction.performed += OnJump;
+        }
+        if (attackAction != null) // <-- ADD THIS
+        {
+            attackAction.performed += OnAttack;
         }
     }
 
@@ -72,6 +75,10 @@ public class PlayerController : MonoBehaviour
         if (jumpAction != null)
         {
             jumpAction.performed -= OnJump;
+        }
+        if (attackAction != null) // <-- ADD THIS
+        {
+            attackAction.performed -= OnAttack;
         }
         controls.Player.Disable();
         controls.Player2.Disable();
@@ -86,41 +93,29 @@ public class PlayerController : MonoBehaviour
 
         if (anim != null)
         {
-            // --- THIS IS THE NEW ANIMATION LOGIC ---
-
-            // 1. Send the absolute speed (for idle vs. moving)
-            // Mathf.Abs() gets the positive value, e.g. -1 becomes 1
+            // Send speed to animator
             anim.SetFloat("Speed", Mathf.Abs(moveInput.x));
 
-            // 2. Check if we are walking backward
+            // Check for walking backwards
             bool isWalkingBackwards = false;
-            
-            // Check for "backward" conditions:
-            if (isFacingRight && moveInput.x < -0.1f) // Facing right, but moving left
+            if (isFacingRight && moveInput.x < -0.1f) 
             {
                 isWalkingBackwards = true;
             }
-            else if (!isFacingRight && moveInput.x > 0.1f) // Facing left, but moving right
+            else if (!isFacingRight && moveInput.x > 0.1f) 
             {
                 isWalkingBackwards = true;
             }
-
-            // 3. Send this true/false value to the Animator
             anim.SetBool("isWalkingBackwards", isWalkingBackwards);
         }
     }
 
     void FixedUpdate()
     {
-        // Physics movement is the same
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        // --- REMOVED FlipCheck() ---
-        // The character no longer auto-flips.
     }
 
-    // OnJump and JumpCooldown are the same
     private void OnJump(InputAction.CallbackContext context)
     {
         if (isGrounded && canJump)
@@ -131,12 +126,19 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    // --- ADD THIS NEW FUNCTION ---
+    private void OnAttack(InputAction.CallbackContext context)
+    {
+        // When the attack button is pressed, send the "Attack" trigger to the Animator.
+        if (anim != null)
+        {
+            anim.SetTrigger("Attack");
+        }
+    }
+    
     private IEnumerator JumpCooldown()
     {
         yield return new WaitForSeconds(jumpCooldown);
         canJump = true;
     }
-
-    // --- REMOVED FlipCheck() and Flip() ---
-    // We no longer use these functions.
 }
