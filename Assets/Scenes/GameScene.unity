@@ -344,7 +344,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3139b99f517faae4295475a848ab3abf, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -369,6 +369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 3
   jumpForce: 5
+  jumpCooldown: 0.2
   groundCheck: {fileID: 633036218}
   groundCheckRadius: 0.2
   groundLayer:
@@ -1184,6 +1185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 3
   jumpForce: 5
+  jumpCooldown: 0.2
   groundCheck: {fileID: 1321935964}
   groundCheckRadius: 0.2
   groundLayer:
@@ -1243,7 +1245,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3139b99f517faae4295475a848ab3abf, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
