@@ -326,8 +326,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0053083217, y: -0.0258802}
-  m_Size: {x: 0.46704382, y: 0.85824084}
+  m_Offset: {x: 0.01137536, y: -0.01734625}
+  m_Size: {x: 0.6710932, y: 1}
   m_Direction: 0
 --- !u!50 &403380943
 Rigidbody2D:
@@ -369,7 +369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 3
-  jumpForce: 5
+  jumpForce: 3.5
   jumpCooldown: 0.2
   groundCheck: {fileID: 633036218}
   groundCheckRadius: 0.2
@@ -1207,7 +1207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 3
-  jumpForce: 5
+  jumpForce: 3.5
   jumpCooldown: 0.2
   groundCheck: {fileID: 1321935964}
   groundCheckRadius: 0.2
@@ -1250,7 +1250,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0.011375359, y: -0.017346246}
-  m_Size: {x: 0.67109317, y: 0.90944606}
+  m_Size: {x: 0.67109317, y: 1}
   m_Direction: 0
 --- !u!50 &1958600346
 Rigidbody2D:
