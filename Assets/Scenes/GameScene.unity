@@ -146,7 +146,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3139b99f517faae4295475a848ab3abf, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -325,8 +325,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0161751, y: -0.0258802}
-  m_Size: {x: 0.44531026, y: 0.85824084}
+  m_Offset: {x: -0.0053083217, y: -0.0258802}
+  m_Size: {x: 0.46704382, y: 0.85824084}
   m_Direction: 0
 --- !u!50 &403380943
 Rigidbody2D:
@@ -402,7 +402,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3139b99f517faae4295475a848ab3abf, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1223,8 +1223,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.007641316, y: -0.017346246}
-  m_Size: {x: 0.6330598, y: 0.90944606}
+  m_Offset: {x: 0.011375359, y: -0.017346246}
+  m_Size: {x: 0.67109317, y: 0.90944606}
   m_Direction: 0
 --- !u!50 &1958600346
 Rigidbody2D:
