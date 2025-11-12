@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private InputSystem_Actions controls;
     private Vector2 moveInput;
+    private Animator anim;
+    
+    private bool isFacingRight = true; // <-- ADD THIS: Start by facing right
 
     // --- We need to store the specific actions ---
     private InputAction moveAction;
@@ -29,6 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         controls = new InputSystem_Actions();
+        anim = GetComponent<Animator>();
 
         if (playerIndex == 0)
         {
@@ -40,16 +44,21 @@ public class PlayerController : MonoBehaviour
         else // if playerIndex is 1 (or anything else)
         {
             // Player 2 uses the "Player2" action map
-            // *** YOU MUST CREATE this "Player2" map in your input asset ***
             moveAction = controls.Player2.Move;
             jumpAction = controls.Player2.Jump;
             controls.Player2.Enable();
+        }
+        
+        // --- ADD THIS: Make sure Player 1 (Ryu) starts facing right ---
+        // (You'll need to check if your Player 2 (Dee Jay) starts facing left)
+        if (playerIndex == 1)
+        {
+            isFacingRight = false; // Player 2 starts facing left
         }
     }
 
     void OnEnable()
     {
-        // Only register the jump action that we are actually using
         if (jumpAction != null)
         {
             jumpAction.performed += OnJump;
@@ -58,23 +67,24 @@ public class PlayerController : MonoBehaviour
 
     void OnDisable()
     {
-        // Only unregister the action we were using
         if (jumpAction != null)
         {
             jumpAction.performed -= OnJump;
         }
-
-        // You could also just disable all maps
         controls.Player.Disable();
         controls.Player2.Disable();
     }
 
     void Update()
     {
-        // Read value from the correct action
         if (moveAction != null)
         {
             moveInput = moveAction.ReadValue<Vector2>();
+        }
+
+        if (anim != null)
+        {
+            anim.SetFloat("Speed", Mathf.Abs(moveInput.x));
         }
     }
 
@@ -82,6 +92,9 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        // --- ADD THIS: Call the Flip function ---
+        FlipCheck();
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -90,5 +103,36 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
+    }
+
+    // --- ADD THIS: New function to flip the character ---
+    private void FlipCheck()
+    {
+        // If moving right but facing left
+        if (moveInput.x > 0 && !isFacingRight)
+        {
+            Flip();
+        }
+        // If moving left but facing right
+        else if (moveInput.x < 0 && isFacingRight)
+        {
+            Flip();
+        }
+    }
+
+    // --- ADD THIS: New function that does the flip ---
+    private void Flip()
+    {
+        // Switch the way the player is labelled as facing
+        isFacingRight = !isFacingRight;
+
+        // Get the current scale
+        Vector3 localScale = transform.localScale;
+        
+        // Flip the x-axis
+        localScale.x *= -1f;
+
+        // Apply the new scale
+        transform.localScale = localScale;
     }
 }
