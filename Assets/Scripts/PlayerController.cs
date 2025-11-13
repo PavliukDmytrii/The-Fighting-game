@@ -1,25 +1,29 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections; // Required for Coroutines (like the jump cooldown)
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement Settings")]
+    // --- Your original variables ---
     public float moveSpeed = 7f;
     public float jumpForce = 14f;
-
-    [Header("Jump Cooldown")]
     [Tooltip("How long to wait (in seconds) before you can jump again.")]
     public float jumpCooldown = 0.2f;
 
-    [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
 
+    // --- ADD THIS HEADER ---
+    [Header("Crouch Settings")]
+    [Tooltip("The height of the collider when crouching.")]
+    public float crouchColliderHeight = 1.0f; // You will need to change this value
+    [Tooltip("The Y-offset of the collider when crouching.")]
+    public float crouchColliderOffsetY = -0.5f; // You will need to change this value
+
     [Header("Player Index")]
     [Tooltip("Set this to 0 for Player 1 (uses 'Player' map), or 1 for Player 2 (uses 'Player2' map)")]
-    public int playerIndex = 0; // 0 = Player 1, 1 = Player 2
+    public int playerIndex = 0;
 
     // --- Private variables ---
     private bool isGrounded;
@@ -27,22 +31,34 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private InputSystem_Actions controls;
     private Vector2 moveInput;
+    private CapsuleCollider2D coll; // <-- ADD THIS: To hold our collider
 
     // --- Player State ---
     private bool isFacingRight = true; 
     private bool canJump = true; 
+    private bool isCrouching = false;
+
+    // --- ADD THESE: To store our collider's original shape ---
+    private Vector2 originalColliderSize;
+    private Vector2 originalColliderOffset;
 
     // --- Input Actions ---
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction attackAction;
+    private InputAction crouchAction;
 
     void Awake()
     {
         // Get components
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        coll = GetComponent<CapsuleCollider2D>(); // <-- ADD THIS: Get the collider
         controls = new InputSystem_Actions();
+
+        // --- ADD THIS: Store the collider's original shape ---
+        originalColliderSize = coll.size;
+        originalColliderOffset = coll.offset;
 
         // --- Set up input based on playerIndex ---
         if (playerIndex == 0)
@@ -51,8 +67,9 @@ public class PlayerController : MonoBehaviour
             moveAction = controls.Player.Move;
             jumpAction = controls.Player.Jump;
             attackAction = controls.Player.Attack;
+            crouchAction = controls.Player.Crouch;
             controls.Player.Enable();
-            isFacingRight = true; // Player 1 starts facing right
+            isFacingRight = true; 
         }
         else // if playerIndex is 1 (or anything else)
         {
@@ -60,14 +77,15 @@ public class PlayerController : MonoBehaviour
             moveAction = controls.Player2.Move;
             jumpAction = controls.Player2.Jump;
             attackAction = controls.Player2.Attack;
+            crouchAction = controls.Player2.Crouch;
             controls.Player2.Enable();
-            isFacingRight = false; // Player 2 starts facing left
+            isFacingRight = false; 
         }
     }
 
+    // OnEnable is the same
     void OnEnable()
     {
-        // Subscribe to the "performed" event for jumping and attacking
         if (jumpAction != null)
         {
             jumpAction.performed += OnJump;
@@ -76,11 +94,16 @@ public class PlayerController : MonoBehaviour
         {
             attackAction.performed += OnAttack;
         }
+        if (crouchAction != null)
+        {
+            crouchAction.performed += OnCrouch; 
+            crouchAction.canceled += OnCrouchRelease; 
+        }
     }
 
+    // OnDisable is the same
     void OnDisable()
     {
-        // Unsubscribe to avoid errors
         if (jumpAction != null)
         {
             jumpAction.performed -= OnJump;
@@ -89,80 +112,105 @@ public class PlayerController : MonoBehaviour
         {
             attackAction.performed -= OnAttack;
         }
-
-        // Disable the action maps
+        if (crouchAction != null)
+        {
+            crouchAction.performed -= OnCrouch;
+            crouchAction.canceled -= OnCrouchRelease;
+        }
         controls.Player.Disable();
         controls.Player2.Disable();
     }
 
+    // Update is the same
     void Update()
     {
-        // Read movement input every frame
         if (moveAction != null)
         {
             moveInput = moveAction.ReadValue<Vector2>();
         }
-
-        // --- Animation Logic ---
+        
+        if (isCrouching)
+        {
+            moveInput.x = 0;
+        }
+        
         if (anim != null)
         {
-            // 1. Send the absolute speed (for idle vs. moving)
-            // Mathf.Abs() gets the positive value, e.g. -1 becomes 1
             anim.SetFloat("Speed", Mathf.Abs(moveInput.x));
 
-            // 2. Check if we are walking backward
             bool isWalkingBackwards = false;
-            
-            // Check for "backward" conditions:
-            if (isFacingRight && moveInput.x < -0.1f) // Facing right, but moving left
+            if (isFacingRight && moveInput.x < -0.1f) 
             {
                 isWalkingBackwards = true;
             }
-            else if (!isFacingRight && moveInput.x > 0.1f) // Facing left, but moving right
+            else if (!isFacingRight && moveInput.x > 0.1f) 
             {
                 isWalkingBackwards = true;
             }
-
-            // 3. Send this true/false value to the Animator
             anim.SetBool("isWalkingBackwards", isWalkingBackwards);
+            anim.SetBool("isCrouching", isCrouching);
         }
     }
 
+    // FixedUpdate is the same
     void FixedUpdate()
     {
-        // Apply physics-based movement
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-        
-        // Check if grounded
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-    }
-
-    private void OnJump(InputAction.CallbackContext context)
-    {
-        // Called when the Jump button is pressed
-        if (isGrounded && canJump)
+        
+        if (anim != null)
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            canJump = false; // Instantly disable jumping
-            StartCoroutine(JumpCooldown()); // Start the timer to re-enable it
+            anim.SetBool("isJumping", !isGrounded);
         }
     }
 
+    private void OnCrouch(InputAction.CallbackContext context)
+    {
+        if (isGrounded)
+        {
+            isCrouching = true;
+
+            // --- ADD THIS ---
+            // Set collider to crouch shape
+            coll.size = new Vector2(originalColliderSize.x, crouchColliderHeight);
+            coll.offset = new Vector2(originalColliderOffset.x, crouchColliderOffsetY);
+        }
+    }
+
+    private void OnCrouchRelease(InputAction.CallbackContext context)
+    {
+        isCrouching = false;
+
+        // --- ADD THIS ---
+        // Set collider back to original shape
+        coll.size = originalColliderSize;
+        coll.offset = originalColliderOffset;
+    }
+
+    // OnJump is the same
+    private void OnJump(InputAction.CallbackContext context)
+    {
+        if (isGrounded && canJump && !isCrouching)
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            canJump = false; 
+            StartCoroutine(JumpCooldown()); 
+        }
+    }
+
+    // OnAttack is the same
     private void OnAttack(InputAction.CallbackContext context)
     {
-        // Called when the Attack button is pressed
-        if (anim != null)
+        if (anim != null && !isCrouching && isGrounded)
         {
             anim.SetTrigger("Attack");
         }
     }
 
+    // JumpCooldown is the same
     private IEnumerator JumpCooldown()
     {
-        // This is a timer (Coroutine) that re-enables jumping
         yield return new WaitForSeconds(jumpCooldown);
-        
-        // After waiting, allow the player to jump again
         canJump = true;
     }
 }

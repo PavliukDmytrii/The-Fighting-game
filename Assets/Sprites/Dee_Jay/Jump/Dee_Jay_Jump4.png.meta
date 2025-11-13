@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 390ef3750045ca34bb483142bf996909
+guid: de93895c48e6ebb4ca4280aad18c24c4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2203732963048077996
-    second: walking-5_0
+      213: 2684811417945206658
+    second: Dee_Jay_Jump4_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: walking-5_0
+      name: Dee_Jay_Jump4_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 89
-        height: 99
+        x: 3
+        y: 1
+        width: 62
+        height: 116
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: caabc4a347b359e10800000000000000
-      internalID: 2203732963048077996
+      spriteID: 28f698782cd524520800000000000000
+      internalID: 2684811417945206658
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      walking-5_0: 2203732963048077996
+      Dee_Jay_Jump4_0: 2684811417945206658
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
