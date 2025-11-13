@@ -4,23 +4,27 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    // --- Your original variables ---
+    [Header("Movement Settings")]
     public float moveSpeed = 7f;
     public float jumpForce = 14f;
+
+    [Header("Jump Cooldown")]
     [Tooltip("How long to wait (in seconds) before you can jump again.")]
     public float jumpCooldown = 0.2f;
 
+    [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
 
-    // --- ADD THIS HEADER ---
-    [Header("Crouch Settings")]
-    [Tooltip("The height of the collider when crouching.")]
-    public float crouchColliderHeight = 1.0f; // You will need to change this value
-    [Tooltip("The Y-offset of the collider when crouching.")]
-    public float crouchColliderOffsetY = -0.5f; // You will need to change this value
+    [Header("Component References")]
+    [Tooltip("Drag your child 'SpriteVisuals' object here.")]
+    public Transform spriteVisualsTransform; 
 
+    [Header("Crouch Settings")]
+    public float crouchColliderHeight = 1.0f;
+    public float crouchColliderOffsetY = -0.5f;
+    
     [Header("Player Index")]
     [Tooltip("Set this to 0 for Player 1 (uses 'Player' map), or 1 for Player 2 (uses 'Player2' map)")]
     public int playerIndex = 0;
@@ -31,34 +35,41 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private InputSystem_Actions controls;
     private Vector2 moveInput;
-    private CapsuleCollider2D coll; // <-- ADD THIS: To hold our collider
+    private CapsuleCollider2D coll; 
 
     // --- Player State ---
     private bool isFacingRight = true; 
     private bool canJump = true; 
     private bool isCrouching = false;
+    private bool isBlocking = false; // Tracks block state
 
-    // --- ADD THESE: To store our collider's original shape ---
+    // --- Collider Original Shape ---
     private Vector2 originalColliderSize;
     private Vector2 originalColliderOffset;
+    private Vector3 originalSpritePosition; 
 
     // --- Input Actions ---
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction attackAction;
     private InputAction crouchAction;
+    private InputAction blockAction; // Action for blocking
 
     void Awake()
     {
         // Get components
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        coll = GetComponent<CapsuleCollider2D>(); // <-- ADD THIS: Get the collider
+        anim = GetComponentInChildren<Animator>(); 
+        coll = GetComponent<CapsuleCollider2D>();
         controls = new InputSystem_Actions();
 
-        // --- ADD THIS: Store the collider's original shape ---
+        // Store original collider/sprite values
         originalColliderSize = coll.size;
         originalColliderOffset = coll.offset;
+        if (spriteVisualsTransform != null)
+        {
+            originalSpritePosition = spriteVisualsTransform.localPosition;
+        }
 
         // --- Set up input based on playerIndex ---
         if (playerIndex == 0)
@@ -68,6 +79,7 @@ public class PlayerController : MonoBehaviour
             jumpAction = controls.Player.Jump;
             attackAction = controls.Player.Attack;
             crouchAction = controls.Player.Crouch;
+            blockAction = controls.Player.Block; // Gets the 'Block' action
             controls.Player.Enable();
             isFacingRight = true; 
         }
@@ -78,12 +90,12 @@ public class PlayerController : MonoBehaviour
             jumpAction = controls.Player2.Jump;
             attackAction = controls.Player2.Attack;
             crouchAction = controls.Player2.Crouch;
+            blockAction = controls.Player2.Block; // Gets the 'Block' action
             controls.Player2.Enable();
             isFacingRight = false; 
         }
     }
 
-    // OnEnable is the same
     void OnEnable()
     {
         if (jumpAction != null)
@@ -99,9 +111,14 @@ public class PlayerController : MonoBehaviour
             crouchAction.performed += OnCrouch; 
             crouchAction.canceled += OnCrouchRelease; 
         }
+        // Listen for the block button being pressed or released
+        if (blockAction != null)
+        {
+            blockAction.performed += OnBlock; 
+            blockAction.canceled += OnBlockRelease; 
+        }
     }
 
-    // OnDisable is the same
     void OnDisable()
     {
         if (jumpAction != null)
@@ -117,11 +134,17 @@ public class PlayerController : MonoBehaviour
             crouchAction.performed -= OnCrouch;
             crouchAction.canceled -= OnCrouchRelease;
         }
+        // Stop listening for block
+        if (blockAction != null)
+        {
+            blockAction.performed -= OnBlock;
+            blockAction.canceled -= OnBlockRelease;
+        }
+
         controls.Player.Disable();
         controls.Player2.Disable();
     }
 
-    // Update is the same
     void Update()
     {
         if (moveAction != null)
@@ -129,7 +152,8 @@ public class PlayerController : MonoBehaviour
             moveInput = moveAction.ReadValue<Vector2>();
         }
         
-        if (isCrouching)
+        // Stop horizontal movement if crouching OR blocking
+        if (isCrouching || isBlocking)
         {
             moveInput.x = 0;
         }
@@ -149,10 +173,10 @@ public class PlayerController : MonoBehaviour
             }
             anim.SetBool("isWalkingBackwards", isWalkingBackwards);
             anim.SetBool("isCrouching", isCrouching);
+            anim.SetBool("isBlocking", isBlocking); // Tell the animator we are blocking
         }
     }
 
-    // FixedUpdate is the same
     void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
@@ -164,33 +188,51 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // --- This function is called when you press 'Q' (Ryu) or 'PgDown' (Dee Jay) ---
+    private void OnBlock(InputAction.CallbackContext context)
+    {
+        // Only block if on ground and not crouching
+        if (isGrounded && !isCrouching)
+        {
+            isBlocking = true;
+        }
+    }
+
+    // --- This function is called when you release the block button ---
+    private void OnBlockRelease(InputAction.CallbackContext context)
+    {
+        isBlocking = false;
+    }
+
     private void OnCrouch(InputAction.CallbackContext context)
     {
         if (isGrounded)
         {
             isCrouching = true;
-
-            // --- ADD THIS ---
-            // Set collider to crouch shape
             coll.size = new Vector2(originalColliderSize.x, crouchColliderHeight);
             coll.offset = new Vector2(originalColliderOffset.x, crouchColliderOffsetY);
+            if (spriteVisualsTransform != null)
+            {
+                spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, -0.2f, originalSpritePosition.z);
+            }
         }
     }
 
     private void OnCrouchRelease(InputAction.CallbackContext context)
     {
         isCrouching = false;
-
-        // --- ADD THIS ---
-        // Set collider back to original shape
         coll.size = originalColliderSize;
         coll.offset = originalColliderOffset;
+        if (spriteVisualsTransform != null)
+        {
+            spriteVisualsTransform.localPosition = originalSpritePosition;
+        }
     }
 
-    // OnJump is the same
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (isGrounded && canJump && !isCrouching)
+        // Can't jump if blocking
+        if (isGrounded && canJump && !isCrouching && !isBlocking)
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             canJump = false; 
@@ -198,16 +240,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // OnAttack is the same
     private void OnAttack(InputAction.CallbackContext context)
     {
-        if (anim != null && !isCrouching && isGrounded)
+        // Can't attack if blocking
+        if (anim != null && !isCrouching && isGrounded && !isBlocking)
         {
             anim.SetTrigger("Attack");
         }
     }
 
-    // JumpCooldown is the same
     private IEnumerator JumpCooldown()
     {
         yield return new WaitForSeconds(jumpCooldown);
