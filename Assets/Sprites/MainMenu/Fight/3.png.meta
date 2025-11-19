@@ -1,10 +1,15 @@
 fileFormatVersion: 2
-guid: a7af9816a98b28142af7f7cc84849798
+guid: 7f5bfacbc9241b048a8f6cc1de70bc5d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2483348671163349515
-    second: B_W_Fight_2-removebg-preview (1)_0
+      213: 7449145514231129239
+    second: Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview
+      (2)_0
+  - first:
+      213: 5978310258686240107
+    second: Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview
+      (2)_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +51,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,13 +105,14 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: B_W_Fight_2-removebg-preview (1)_0
+      name: Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview
+        (2)_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 279
-        height: 132
+        width: 110
+        height: 141
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +121,31 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b0a31268570a67220800000000000000
-      internalID: 2483348671163349515
+      spriteID: 794e0ffb06ea06760800000000000000
+      internalID: 7449145514231129239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview
+        (2)_1
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 0
+        width: 225
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b65211e718937f250800000000000000
+      internalID: 5978310258686240107
       vertices: []
       indices: 
       edges: []
@@ -125,7 +154,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +164,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      B_W_Fight_2-removebg-preview (1)_0: 2483348671163349515
+      Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview (2)_0: 7449145514231129239
+      Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview (2)_1: 5978310258686240107
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

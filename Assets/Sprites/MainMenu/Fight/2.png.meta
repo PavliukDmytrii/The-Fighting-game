@@ -1,10 +1,11 @@
 fileFormatVersion: 2
-guid: 971b54593f719894f999ee6d98aa4641
+guid: d67e381c8b078424a8740a8c28122073
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -101952181594911618
-    second: B_W_Fight_2-removebg-preview_0
+      213: -8501907685846652952
+    second: Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview
+      (1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +101,14 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: B_W_Fight_2-removebg-preview_0
+      name: Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview
+        (1)_0
       rect:
         serializedVersion: 2
-        x: 60
+        x: 4
         y: 0
-        width: 225
-        height: 96
+        width: 282
+        height: 134
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +117,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e7c85ffe70bc59ef0800000000000000
-      internalID: -101952181594911618
+      spriteID: 8e762f73108230a80800000000000000
+      internalID: -8501907685846652952
       vertices: []
       indices: 
       edges: []
@@ -135,7 +137,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      B_W_Fight_2-removebg-preview_0: -101952181594911618
+      Arcade_-_Street_Fighter_2___Super_Street_Fighter_2_-_Miscellaneous_-_Title-removebg-preview (1)_0: -8501907685846652952
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
