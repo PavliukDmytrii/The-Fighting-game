@@ -54,6 +54,10 @@ public class PlayerController : MonoBehaviour
     private InputAction attackAction;
     private InputAction crouchAction;
     private InputAction blockAction; // Action for blocking
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayers;
+
 
     void Awake()
     {
@@ -246,7 +250,23 @@ public class PlayerController : MonoBehaviour
         if (anim != null && !isCrouching && isGrounded && !isBlocking)
         {
             anim.SetTrigger("Attack");
+            // Detect enemies in range of attack
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+            // Damage them
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                Debug.Log("We hit " + enemy.name);
+                // Here you would call a method on the enemy to apply damage
+            }
         }
+    }
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null)
+            return;
+
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
     private IEnumerator JumpCooldown()
