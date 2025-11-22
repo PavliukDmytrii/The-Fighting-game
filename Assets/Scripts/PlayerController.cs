@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
+    public int attackDamage = 20;
 
 
     void Awake()
@@ -256,8 +257,7 @@ public class PlayerController : MonoBehaviour
             // Damage them
             foreach(Collider2D enemy in hitEnemies)
             {
-                Debug.Log("We hit " + enemy.name);
-                // Here you would call a method on the enemy to apply damage
+                enemy.GetComponent<Health>().TakeDamage(attackDamage);
             }
         }
     }
