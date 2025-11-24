@@ -374,6 +374,37 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &191936300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 191936301}
+  m_Layer: 0
+  m_Name: AttackPoint1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &191936301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191936300}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.465, y: 0.37, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 403380941}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &244794334
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,6 +576,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 633036218}
+  - {fileID: 191936301}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &403380942
@@ -635,7 +667,7 @@ MonoBehaviour:
   crouchColliderHeight: 1
   crouchColliderOffsetY: -0.5
   playerIndex: 0
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 191936301}
   attackRange: 0.5
   enemyLayers:
     serializedVersion: 2
@@ -993,7 +1025,7 @@ Transform:
   m_GameObject: {fileID: 633036217}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.25, y: -0.64, z: 0}
+  m_LocalPosition: {x: -0.25, y: -0.539, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1310,7 +1342,38 @@ Transform:
   m_GameObject: {fileID: 1321935963}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.25, y: -0.64, z: 0}
+  m_LocalPosition: {x: -0.25, y: -0.539, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1958600348}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1390155337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1390155338}
+  m_Layer: 0
+  m_Name: AttackPoint2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1390155338
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390155337}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.488, y: 0.434, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1734,7 +1797,7 @@ MonoBehaviour:
   crouchColliderHeight: 0.8
   crouchColliderOffsetY: -0.5
   playerIndex: 1
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 1390155338}
   attackRange: 0.5
   enemyLayers:
     serializedVersion: 2
@@ -1876,6 +1939,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1321935964}
+  - {fileID: 1390155338}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1958600349
@@ -1905,6 +1969,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 1522441729}
   - {fileID: 1046299820}
   - {fileID: 403380941}
   - {fileID: 1958600348}
@@ -1915,5 +1980,4 @@ SceneRoots:
   - {fileID: 409000900}
   - {fileID: 244794336}
   - {fileID: 74663971}
-  - {fileID: 1522441729}
   - {fileID: 1107517432}
