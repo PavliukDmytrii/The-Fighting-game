@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 1052c45e9929f694890a76f03494d86e
+guid: f386a5026ecad4941b5676343b252d19
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5148744230644131776
-    second: RYU_name-Photoroom_0
+      213: 2434702352390601527
+    second: RYU_name.1 (2)_0
   - first:
-      213: 2370957030319113664
-    second: RYU_name-Photoroom_1
+      213: 3526928291368209327
+    second: RYU_name.1 (2)_1
   - first:
-      213: 8722337098784643323
-    second: RYU_name-Photoroom_2
+      213: -3991893457949307734
+    second: RYU_name.1 (2)_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RYU_name-Photoroom_0
+      name: RYU_name.1 (2)_0
       rect:
         serializedVersion: 2
-        x: 36
-        y: 0
-        width: 17
-        height: 15
+        x: 430
+        y: 7
+        width: 122
+        height: 157
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +121,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0485d15c66cfb88b0800000000000000
-      internalID: -5148744230644131776
+      spriteID: 73bbc00d3ecc9c120800000000000000
+      internalID: 2434702352390601527
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RYU_name-Photoroom_1
+      name: RYU_name.1 (2)_1
       rect:
         serializedVersion: 2
-        x: 51
-        y: 0
-        width: 18
-        height: 15
+        x: 567
+        y: 7
+        width: 122
+        height: 157
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0c5c2e17bd457e020800000000000000
-      internalID: 2370957030319113664
+      spriteID: fab0743389a22f030800000000000000
+      internalID: 3526928291368209327
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RYU_name-Photoroom_2
+      name: RYU_name.1 (2)_2
       rect:
         serializedVersion: 2
-        x: 68
-        y: 0
-        width: 17
-        height: 15
+        x: 704
+        y: 7
+        width: 123
+        height: 157
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,8 +165,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bf81540e067fb0970800000000000000
-      internalID: 8722337098784643323
+      spriteID: aacc9b9cc02f998c0800000000000000
+      internalID: -3991893457949307734
       vertices: []
       indices: 
       edges: []
@@ -185,9 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      RYU_name-Photoroom_0: -5148744230644131776
-      RYU_name-Photoroom_1: 2370957030319113664
-      RYU_name-Photoroom_2: 8722337098784643323
+      RYU_name.1 (2)_0: 2434702352390601527
+      RYU_name.1 (2)_1: 3526928291368209327
+      RYU_name.1 (2)_2: -3991893457949307734
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

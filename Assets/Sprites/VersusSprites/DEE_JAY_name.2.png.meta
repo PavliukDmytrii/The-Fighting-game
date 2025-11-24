@@ -1,16 +1,25 @@
 fileFormatVersion: 2
-guid: 02cb93ef5d7b35f43be72f27df0ff448
+guid: 060da3901c22f36438ee4c93ce2761fe
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7215576907638387459
-    second: Name_RYU-Photoroom_0
+      213: 3404983326842145086
+    second: DEE_JAY_name.2 (2)_0
   - first:
-      213: 8704651719000653403
-    second: Name_RYU-Photoroom_1
+      213: -7893866977801263278
+    second: DEE_JAY_name.2 (2)_1
   - first:
-      213: 895375279191387763
-    second: Name_RYU-Photoroom_2
+      213: 2065039292678519794
+    second: DEE_JAY_name.2 (2)_2
+  - first:
+      213: 4333113322177227476
+    second: DEE_JAY_name.2 (2)_3
+  - first:
+      213: 5222956577485226197
+    second: DEE_JAY_name.2 (2)_4
+  - first:
+      213: 2625535583884559793
+    second: DEE_JAY_name.2 (2)_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,13 +115,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Name_RYU-Photoroom_0
+      name: DEE_JAY_name.2 (2)_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 0
-        width: 17
-        height: 15
+        x: 186
+        y: 44
+        width: 123
+        height: 137
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +130,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3033c4db7f0e22460800000000000000
-      internalID: 7215576907638387459
+      spriteID: e39cd8e9b4ee04f20800000000000000
+      internalID: 3404983326842145086
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Name_RYU-Photoroom_1
+      name: DEE_JAY_name.2 (2)_1
       rect:
         serializedVersion: 2
-        x: 34
-        y: 0
-        width: 6
-        height: 5
+        x: 324
+        y: 43
+        width: 124
+        height: 138
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b5ef6848e922dc870800000000000000
-      internalID: 8704651719000653403
+      spriteID: 25728f3aec9537290800000000000000
+      internalID: -7893866977801263278
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Name_RYU-Photoroom_2
+      name: DEE_JAY_name.2 (2)_2
       rect:
         serializedVersion: 2
-        x: 40
-        y: 0
-        width: 77
-        height: 15
+        x: 463
+        y: 44
+        width: 123
+        height: 137
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,8 +174,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 37e6ed092130d6c00800000000000000
-      internalID: 895375279191387763
+      spriteID: 2fbb35fab4e78ac10800000000000000
+      internalID: 2065039292678519794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DEE_JAY_name.2 (2)_3
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 43
+        width: 124
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dae2e3db9f422c30800000000000000
+      internalID: 4333113322177227476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DEE_JAY_name.2 (2)_4
+      rect:
+        serializedVersion: 2
+        x: 838
+        y: 44
+        width: 124
+        height: 137
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d00c46b55bab7840800000000000000
+      internalID: 5222956577485226197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DEE_JAY_name.2 (2)_5
+      rect:
+        serializedVersion: 2
+        x: 986
+        y: 43
+        width: 124
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b5469ee3b6cf6420800000000000000
+      internalID: 2625535583884559793
       vertices: []
       indices: 
       edges: []
@@ -185,9 +260,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Name_RYU-Photoroom_0: 7215576907638387459
-      Name_RYU-Photoroom_1: 8704651719000653403
-      Name_RYU-Photoroom_2: 895375279191387763
+      DEE_JAY_name.2 (2)_0: 3404983326842145086
+      DEE_JAY_name.2 (2)_1: -7893866977801263278
+      DEE_JAY_name.2 (2)_2: 2065039292678519794
+      DEE_JAY_name.2 (2)_3: 4333113322177227476
+      DEE_JAY_name.2 (2)_4: 5222956577485226197
+      DEE_JAY_name.2 (2)_5: 2625535583884559793
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
