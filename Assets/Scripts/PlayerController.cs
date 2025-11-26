@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight = true; 
     private bool canJump = true; 
     private bool isCrouching = false;
-    private bool isBlocking = false; // Tracks block state
+    public bool isBlocking = false; // Tracks block state
 
     // --- Collider Original Shape ---
     private Vector2 originalColliderSize;
@@ -258,7 +258,6 @@ public class PlayerController : MonoBehaviour
             // Damage them
             foreach (Collider2D enemy in hitEnemies)
             {
-                Debug.Log("We hit " + enemy.name);
                 enemy.GetComponent<Health>().TakeDamage(attackDamage);
             }
         }

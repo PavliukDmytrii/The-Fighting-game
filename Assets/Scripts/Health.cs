@@ -3,23 +3,36 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
-    int currentHealth;
+    private int currentHealth;
+    private PlayerController playerController;
+
     void Start()
     {
         currentHealth = maxHealth;
+        playerController = GetComponent<PlayerController>();
     }
 
     public void TakeDamage(int damage)
     {
+       
+        if (playerController != null && playerController.isBlocking)
+        {
+            Debug.Log($"{name} The damage has been blocked!");
+            return;
+        }
+
         currentHealth -= damage;
+        Debug.Log($"{name} got {damage} damage. HP: {currentHealth}");
+
         if (currentHealth <= 0)
         {
             Die();
         }
     }
+
     void Die()
     {
-        Debug.Log("Player Died!");
-        // Add death logic here 
+        Debug.Log($"{name} Died!");
+        Destroy(gameObject);
     }
 }
