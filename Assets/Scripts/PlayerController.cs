@@ -251,12 +251,14 @@ public class PlayerController : MonoBehaviour
         if (anim != null && !isCrouching && isGrounded && !isBlocking)
         {
             anim.SetTrigger("Attack");
+
             // Detect enemies in range of attack
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
             // Damage them
-            foreach(Collider2D enemy in hitEnemies)
+            foreach (Collider2D enemy in hitEnemies)
             {
+                Debug.Log("We hit " + enemy.name);
                 enemy.GetComponent<Health>().TakeDamage(attackDamage);
             }
         }
