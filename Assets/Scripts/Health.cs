@@ -51,9 +51,29 @@ public void TakeDamage(int damage)
     }
 }
 
-    void Die()
+void Die()
     {
+        if (!this.enabled) return;
+
         Debug.Log($"{name} Died!");
-        Destroy(gameObject);
+
+        if (playerController != null)
+        {
+            playerController.LoseGame();
+        }
+
+        PlayerController[] allPlayers = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
+        foreach (PlayerController p in allPlayers)
+        {
+            if (p != playerController)
+            {
+                p.WinGame();
+            }
+        }
+
+        this.enabled = false;
+        
+        Collider2D myCollider = GetComponent<Collider2D>();
+        if (myCollider != null) myCollider.enabled = false;
     }
 }

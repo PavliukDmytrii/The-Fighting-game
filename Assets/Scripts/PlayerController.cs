@@ -194,11 +194,20 @@ public void TakeHit()
         if (anim != null) anim.SetTrigger("Victory");
     }
 
-    public void LoseGame()
+public void LoseGame()
     {
         SetControlLock(true);
-        rb.simulated = false; 
-        if (anim != null) anim.SetTrigger("Defeat");
+        rb.simulated = false;
+        
+        if (anim != null) 
+        {
+            anim.SetTrigger("Defeat");
+        }
+
+        if (spriteVisualsTransform != null)
+        {
+            spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, -0.3f, originalSpritePosition.z);
+        }
     }
 
     public void SetControlLock(bool isLocked)
@@ -259,7 +268,7 @@ public void TakeHit()
             coll.size = new Vector2(originalColliderSize.x, crouchColliderHeight);
             coll.offset = new Vector2(originalColliderOffset.x, crouchColliderOffsetY);
             if (spriteVisualsTransform != null)
-                spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, -0.2f, originalSpritePosition.z);
+                spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, 0f, originalSpritePosition.z);
         }
     }
 
