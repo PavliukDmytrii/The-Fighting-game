@@ -9,6 +9,13 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 14f;
     public float jumpCooldown = 0.2f;
 
+    [Header("Combat Settings")]
+    public float attackDuration = 0.3f; // <-- NEW: How long to stand still when jabbing
+    public int attackDamage = 20;
+    public float attackRange = 0.5f;
+    public Transform attackPoint;
+    public LayerMask enemyLayers;
+
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
@@ -36,10 +43,11 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight = true; 
     private bool canJump = true; 
     private bool isCrouching = false;
+    private bool isAttacking = false; // <-- NEW: Tracks if we are attacking
     
-    // PUBLIC variables for other scripts to see
+    // PUBLIC variables
     public bool isBlocking = false; 
-    public bool isLockControl = false; // <--- This fixes your first error
+    public bool isLockControl = false; 
 
     // --- Storage ---
     private Vector2 originalColliderSize;
@@ -52,11 +60,6 @@ public class PlayerController : MonoBehaviour
     private InputAction attackAction;
     private InputAction crouchAction;
     private InputAction blockAction; 
-    
-    public Transform attackPoint;
-    public float attackRange = 0.5f;
-    public LayerMask enemyLayers;
-    public int attackDamage = 20;
 
     void Awake()
     {
@@ -119,16 +122,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // 1. If locked, stop everything and RETURN
+        // 1. Locked (Intro/Damage/Death)
         if (isLockControl) 
         {
             moveInput = Vector2.zero;
-            // Update animator to show we stopped
-            if (anim != null)
-            {
-                anim.SetFloat("Speed", 0);
-                anim.SetBool("isWalkingBackwards", false);
-            }
+            if (anim != null) { anim.SetFloat("Speed", 0); anim.SetBool("isWalkingBackwards", false); }
             return; 
         }
 
@@ -138,18 +136,19 @@ public class PlayerController : MonoBehaviour
             moveInput = moveAction.ReadValue<Vector2>();
         }
         
-        if (isCrouching || isBlocking)
+        // 3. STOP movement if Crouching OR Blocking OR Attacking <-- CHANGED HERE
+        if (isCrouching || isBlocking || isAttacking)
         {
             moveInput.x = 0;
         }
 
-        // 3. Safety Check: Stop crouching if falling
+        // 4. Safety Check (Stop crouching if falling)
         if (!isGrounded && isCrouching)
         {
-            StopCrouching(); // <--- This fixes your second error
+            StopCrouching();
         }
 
-        // 4. Update Animator
+        // 5. Update Animator
         if (anim != null)
         {
             anim.SetFloat("Speed", Mathf.Abs(moveInput.x));
@@ -210,22 +209,16 @@ public class PlayerController : MonoBehaviour
     private void StopCrouching()
     {
         isCrouching = false;
-        if (coll != null)
-        {
-            coll.size = originalColliderSize;
-            coll.offset = originalColliderOffset;
-        }
-        if (spriteVisualsTransform != null)
-        {
-            spriteVisualsTransform.localPosition = originalSpritePosition;
-        }
+        if (coll != null) { coll.size = originalColliderSize; coll.offset = originalColliderOffset; }
+        if (spriteVisualsTransform != null) { spriteVisualsTransform.localPosition = originalSpritePosition; }
     }
+
+    // --- Coroutines ---
 
     private IEnumerator StunCoroutine(float duration)
     {
         isLockControl = true;
         yield return new WaitForSeconds(duration);
-        // Unlock only if game isn't over
         if (anim != null && !anim.GetCurrentAnimatorStateInfo(0).IsName("Victory") && 
             !anim.GetCurrentAnimatorStateInfo(0).IsName("Defeat"))
         {
@@ -233,7 +226,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // --- Input Callbacks ---
+    // --- NEW: Stops movement for a short time when attacking ---
+    private IEnumerator AttackMovementLock()
+    {
+        isAttacking = true;
+        yield return new WaitForSeconds(attackDuration);
+        isAttacking = false;
+    }
+
+    // --- Inputs ---
 
     private void OnBlock(InputAction.CallbackContext context)
     {
@@ -253,9 +254,7 @@ public class PlayerController : MonoBehaviour
             coll.size = new Vector2(originalColliderSize.x, crouchColliderHeight);
             coll.offset = new Vector2(originalColliderOffset.x, crouchColliderOffsetY);
             if (spriteVisualsTransform != null)
-            {
                 spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, -0.2f, originalSpritePosition.z);
-            }
         }
     }
 
@@ -266,7 +265,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (isGrounded && canJump && !isCrouching && !isBlocking && !isLockControl)
+        // Cannot jump if attacking
+        if (isGrounded && canJump && !isCrouching && !isBlocking && !isLockControl && !isAttacking)
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             canJump = false; 
@@ -276,9 +276,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext context)
     {
-        if (anim != null && !isCrouching && isGrounded && !isBlocking && !isLockControl)
+        // Cannot attack if already attacking
+        if (anim != null && !isCrouching && isGrounded && !isBlocking && !isLockControl && !isAttacking)
         {
             anim.SetTrigger("Attack");
+
+            // --- NEW: Start the freeze timer ---
+            StartCoroutine(AttackMovementLock());
 
             if (attackPoint != null)
             {

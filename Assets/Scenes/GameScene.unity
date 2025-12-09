@@ -809,6 +809,13 @@ MonoBehaviour:
   moveSpeed: 3
   jumpForce: 3.5
   jumpCooldown: 0.2
+  attackDuration: 0.8
+  attackDamage: 20
+  attackRange: 0.5
+  attackPoint: {fileID: 191936301}
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 128
   groundCheck: {fileID: 633036218}
   groundCheckRadius: 0.2
   groundLayer:
@@ -820,12 +827,6 @@ MonoBehaviour:
   playerIndex: 0
   isBlocking: 0
   isLockControl: 0
-  attackPoint: {fileID: 191936301}
-  attackRange: 0.5
-  enemyLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  attackDamage: 20
 --- !u!95 &403380945
 Animator:
   serializedVersion: 7
@@ -2438,6 +2439,13 @@ MonoBehaviour:
   moveSpeed: 3
   jumpForce: 3.5
   jumpCooldown: 0.2
+  attackDuration: 0.8
+  attackDamage: 20
+  attackRange: 0.5
+  attackPoint: {fileID: 1390155338}
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 64
   groundCheck: {fileID: 1321935964}
   groundCheckRadius: 0.1
   groundLayer:
@@ -2449,12 +2457,6 @@ MonoBehaviour:
   playerIndex: 1
   isBlocking: 0
   isLockControl: 0
-  attackPoint: {fileID: 1390155338}
-  attackRange: 0.5
-  enemyLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  attackDamage: 20
 --- !u!70 &1958600345
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
