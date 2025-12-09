@@ -176,11 +176,16 @@ public class PlayerController : MonoBehaviour
 
     // --- Helper Functions ---
 
-    public void TakeHit()
+public void TakeHit()
     {
-        if (isLockControl) return;
-        if (anim != null) anim.SetTrigger("Hit");
-        StartCoroutine(StunCoroutine(0.4f));
+        
+        if (anim != null) 
+        {
+            anim.SetTrigger("Hit");
+        }
+        
+        StopCoroutine("StunCoroutine"); 
+        StartCoroutine(StunCoroutine(0.4f)); 
     }
 
     public void WinGame()
