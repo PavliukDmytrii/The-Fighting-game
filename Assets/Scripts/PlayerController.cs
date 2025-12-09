@@ -193,6 +193,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void TakeHit()
+    {
+        if (anim != null)
+        {
+            anim.SetTrigger("Hit");
+        }
+    }
+
     // --- This function is called when you press 'Q' (Ryu) or 'PgDown' (Dee Jay) ---
     private void OnBlock(InputAction.CallbackContext context)
     {

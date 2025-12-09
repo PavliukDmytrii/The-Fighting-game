@@ -29,23 +29,27 @@ public class Health : MonoBehaviour
         playerController = GetComponent<PlayerController>();
     }
 
-    public void TakeDamage(int damage)
+public void TakeDamage(int damage)
+{
+    if (playerController != null && playerController.isBlocking)
     {
-       
-        if (playerController != null && playerController.isBlocking)
-        {
-            Debug.Log($"{name} The damage has been blocked!");
-            return;
-        }
-
-        CurrentHealth -= damage;
-        Debug.Log($"{name} got {damage} damage. HP: {CurrentHealth}");
-
-        if (CurrentHealth <= 0)
-        {
-            Die();
-        }
+        Debug.Log($"{name} The damage has been blocked!");
+        return;
     }
+
+    CurrentHealth -= damage;
+    Debug.Log($"{name} got {damage} damage. HP: {CurrentHealth}");
+
+    if (playerController != null && CurrentHealth > 0)
+    {
+        playerController.TakeHit();
+    }
+
+    if (CurrentHealth <= 0)
+    {
+        Die();
+    }
+}
 
     void Die()
     {
