@@ -19,17 +19,31 @@ public class FightIntro : MonoBehaviour
 
     private CanvasGroup roundCG;
     private CanvasGroup fightCG;
+    
+    // --- NEW: To store the players ---
+    private PlayerController[] players; 
 
-    void Start()
+void Start()
     {
         roundCG = roundLabel.GetComponent<CanvasGroup>();
         fightCG = fightLabel.GetComponent<CanvasGroup>();
 
         if (roundCG == null || fightCG == null)
         {
-            Debug.LogError("ОШИБКА: Забыл добавить Canvas Group на картинки!");
+            Debug.LogError("Error: Canvas Group missing!");
             return;
         }
+
+        players = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
+        
+        Debug.Log("FightIntro found " + players.Length + " players.");
+
+        if (players.Length == 0)
+        {
+             Debug.LogError("CRITICAL ERROR: FightIntro could not find any PlayerController scripts in the scene!");
+        }
+
+        SetPlayersLock(true); 
 
         StartCoroutine(StartFightSequence());
     }
@@ -46,20 +60,43 @@ public class FightIntro : MonoBehaviour
             audioSource.PlayOneShot(fullSound);
         }
 
+        // Show "Round 1"
         StartCoroutine(FadeCanvasGroup(roundCG, 0, 1, fadeSpeed));
         yield return new WaitForSeconds(timeBeforeFight);
 
+        // Hide "Round 1", Show "Fight!"
         roundCG.alpha = 0;
         StartCoroutine(FadeCanvasGroup(fightCG, 0, 1, fadeSpeed));
 
+        // --- NEW: UNLOCK PLAYERS NOW (When "Fight" appears) ---
+        SetPlayersLock(false); 
+        // ------------------------------------------------------
+
         yield return new WaitForSeconds(fightDuration);
 
+        // Fade out "Fight!"
         StartCoroutine(FadeCanvasGroup(fightCG, 1, 0, fadeSpeed));
         yield return new WaitForSeconds(fadeSpeed);
 
         roundLabel.SetActive(false);
         fightLabel.SetActive(false);
     }
+
+    // --- NEW: Helper function ---
+    void SetPlayersLock(bool isLocked)
+    {
+        if (players != null)
+        {
+            foreach (PlayerController player in players)
+            {
+                if (player != null)
+                {
+                    player.SetControlLock(isLocked);
+                }
+            }
+        }
+    }
+
     IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float duration)
     {
         float timer = 0f;
