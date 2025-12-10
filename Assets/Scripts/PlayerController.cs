@@ -9,8 +9,15 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 14f;
     public float jumpCooldown = 0.2f;
 
+[Header("Ryu Visual Fixes")]
+    public float ryuVictoryHeight = 0f;
+    public float ryuDefeatHeight = -0.25f;
+
+    [Header("Dee Jay Visual Fixes")]
+    public float deeJayVictoryHeight = 0f;
+    public float deeJayDefeatHeight = 0f;
     [Header("Combat Settings")]
-    public float attackDuration = 0.3f; // <-- NEW: How long to stand still when jabbing
+    public float attackDuration = 0.3f;
     public int attackDamage = 20;
     public float attackRange = 0.5f;
     public Transform attackPoint;
@@ -188,16 +195,33 @@ public void TakeHit()
         StartCoroutine(StunCoroutine(0.4f)); 
     }
 
-    public void WinGame()
+public void WinGame()
     {
         SetControlLock(true);
-        if (anim != null) anim.SetTrigger("Victory");
+        if (rb != null) rb.linearVelocity = Vector2.zero; 
+
+        if (anim != null) 
+        {
+            anim.SetTrigger("Victory");
+        }
+
+        if (spriteVisualsTransform != null)
+        {
+            if (playerIndex == 0)
+            {
+                spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, ryuVictoryHeight, originalSpritePosition.z);
+            }
+            else if (playerIndex == 1)
+            {
+                spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, deeJayVictoryHeight, originalSpritePosition.z);
+            }
+        }
     }
 
-public void LoseGame()
+    public void LoseGame()
     {
         SetControlLock(true);
-        rb.simulated = false;
+        rb.simulated = false; 
         
         if (anim != null) 
         {
@@ -206,7 +230,14 @@ public void LoseGame()
 
         if (spriteVisualsTransform != null)
         {
-            spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, -0.3f, originalSpritePosition.z);
+            if (playerIndex == 0)
+            {
+                spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, ryuDefeatHeight, originalSpritePosition.z);
+            }
+            else if (playerIndex == 1)
+            {
+                spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, deeJayDefeatHeight, originalSpritePosition.z);
+            }
         }
     }
 
