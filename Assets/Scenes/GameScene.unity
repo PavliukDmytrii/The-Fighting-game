@@ -860,6 +860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+  playerController: {fileID: 0}
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1698,6 +1699,9 @@ MonoBehaviour:
   tensImage: {fileID: 145643622}
   onesImage: {fileID: 1394010329}
   maxTime: 90
+  lastHitter: 0
+  player1Health: {fileID: 403380946}
+  player2Health: {fileID: 1958600350}
 --- !u!1 &1195812526
 GameObject:
   m_ObjectHideFlags: 0
@@ -2882,6 +2886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+  playerController: {fileID: 0}
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []

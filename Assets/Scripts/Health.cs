@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,7 +6,7 @@ public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
     private int _currentHealth;
-    private PlayerController playerController;
+    public PlayerController playerController;
 
     [HideInInspector] public UnityEvent<int> onHealthChanged;
 
@@ -38,6 +39,16 @@ public void TakeDamage(int damage)
     }
 
     CurrentHealth -= damage;
+
+    RoundTimer roundTimer = Object.FindFirstObjectByType<RoundTimer>();
+    if (roundTimer != null)
+    {
+        if (gameObject.name == "Player1")
+            roundTimer.lastHitter = 2;
+        else
+            roundTimer.lastHitter = 1;
+    }
+
     Debug.Log($"{name} got {damage} damage. HP: {CurrentHealth}");
 
     if (playerController != null && CurrentHealth > 0)

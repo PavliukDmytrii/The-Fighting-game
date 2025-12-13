@@ -11,6 +11,12 @@ public class RoundTimer : MonoBehaviour
     [Header("Settings")]
     public float maxTime = 90f;
 
+    [HideInInspector] public int lastHitter = 0; // 0 = none, 1 = player1, 2 = player2
+
+    [Header("Players")]
+    public Health player1Health;
+    public Health player2Health;
+
     private float currentTime;
     private bool isRunning = true;
 
@@ -53,6 +59,39 @@ public class RoundTimer : MonoBehaviour
     void TimeUp()
     {
         Debug.Log("TIME OVER");
-        // We will add the winner logic here
+
+
+        if (player1Health.CurrentHealth > player2Health.CurrentHealth)
+        {
+            Win(1);
+        }
+        else if (player2Health.CurrentHealth > player1Health.CurrentHealth)
+        {
+            Win(2);
+        }
+        else
+        {
+         
+            if (lastHitter == 1) Win(1);
+            else if (lastHitter == 2) Win(2);
+            else Win(1); 
+        }
+
+        void Win(int playerIndex)
+        {
+            Debug.Log($"Player {playerIndex} Wins by Time Over!");
+
+         
+            if (playerIndex == 1)
+            {
+                player1Health.playerController.WinGame();
+                player2Health.playerController.LoseGame();
+            }
+            else
+            {
+                player2Health.playerController.WinGame();
+                player1Health.playerController.LoseGame();
+            }
+        }
     }
 }
