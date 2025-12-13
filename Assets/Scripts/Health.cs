@@ -17,7 +17,7 @@ public class Health : MonoBehaviour
         {
             _currentHealth = Mathf.Clamp(value, 0, maxHealth);
             onHealthChanged.Invoke(_currentHealth);
-            if(_currentHealth <= 0)
+            if (_currentHealth <= 0)
             {
                 Die();
             }
@@ -30,61 +30,54 @@ public class Health : MonoBehaviour
         playerController = GetComponent<PlayerController>();
     }
 
-public void TakeDamage(int damage)
-{
-    if (playerController != null && playerController.isBlocking)
+    public void TakeDamage(int damage)
     {
-        Debug.Log($"{name} The damage has been blocked!");
-        return;
+        if (playerController != null && playerController.isBlocking)
+        {
+            Debug.Log($"{name} The damage has been blocked!");
+            return;
+        }
+
+        CurrentHealth -= damage;
+
+        RoundTimer roundTimer = Object.FindFirstObjectByType<RoundTimer>();
+        if (roundTimer != null)
+        {
+            if (gameObject.name == "Player1")
+                roundTimer.lastHitter = 2;
+            else
+                roundTimer.lastHitter = 1;
+        }
+
+        Debug.Log($"{name} got {damage} damage. HP: {CurrentHealth}");
+
+        if (playerController != null && CurrentHealth > 0)
+        {
+            playerController.TakeHit();
+        }
+
+        if (CurrentHealth <= 0)
+        {
+            Die();
+        }
     }
 
-    CurrentHealth -= damage;
-
-    RoundTimer roundTimer = Object.FindFirstObjectByType<RoundTimer>();
-    if (roundTimer != null)
-    {
-        if (gameObject.name == "Player1")
-            roundTimer.lastHitter = 2;
-        else
-            roundTimer.lastHitter = 1;
-    }
-
-    Debug.Log($"{name} got {damage} damage. HP: {CurrentHealth}");
-
-    if (playerController != null && CurrentHealth > 0)
-    {
-        playerController.TakeHit();
-    }
-
-    if (CurrentHealth <= 0)
-    {
-        Die();
-    }
-}
-
-void Die()
+    void Die()
     {
         if (!this.enabled) return;
 
         Debug.Log($"{name} Died!");
-
-        if (playerController != null)
-        {
-            playerController.LoseGame();
-        }
-
-        PlayerController[] allPlayers = FindObjectsByType<PlayerController>(FindObjectsSortMode.None);
-        foreach (PlayerController p in allPlayers)
-        {
-            if (p != playerController)
-            {
-                p.WinGame();
-            }
-        }
-
         this.enabled = false;
-        
-        Collider2D myCollider = GetComponent<Collider2D>();
-        if (myCollider != null) myCollider.enabled = false;
+
+        //
+        RoundTimer timer = FindFirstObjectByType<RoundTimer>();
+
+        if (timer != null)
+        {
+            if (gameObject.name == "Player_1")
+                timer.RoundOver(2);
+            else
+                timer.RoundOver(1);
+        }
     }
 }

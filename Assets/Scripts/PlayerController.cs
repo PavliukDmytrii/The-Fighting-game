@@ -359,4 +359,34 @@ public void WinGame()
         yield return new WaitForSeconds(jumpCooldown);
         canJump = true;
     }
+
+
+    public void ResetState()
+    {
+        isLockControl = false;
+
+        // returt phisics 
+        if (rb != null)
+        {
+            rb.simulated = true;
+            rb.linearVelocity = Vector2.zero;
+        }
+
+        if (spriteVisualsTransform != null)
+        {
+            spriteVisualsTransform.localPosition = originalSpritePosition;
+        }
+
+        // reset anim
+        if (anim != null)
+        {
+            anim.Rebind(); 
+            anim.Update(0f);
+        }
+
+        isCrouching = false;
+        isBlocking = false;
+        isAttacking = false;
+        StopAllCoroutines(); 
+    }
 }
