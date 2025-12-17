@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro; // Required for the Score Text
 
 public class RoundTimer : MonoBehaviour
 {
@@ -9,11 +10,15 @@ public class RoundTimer : MonoBehaviour
     public Image tensImage;
     public Image onesImage;
 
+    [Header("Score UI")]
+    public TextMeshProUGUI p1ScoreText; // Assign your Player 1 Score Text here
+    public TextMeshProUGUI p2ScoreText; // Assign your Player 2 Score Text here
+
     [Header("Intro Reference")]
     public FightIntro fightIntro;
 
     [Header("Round Settings")]
-    public int roundsToWin = 2; //2 out of 3
+    public int roundsToWin = 2; // 2 out of 3
     private int p1Wins = 0;
     private int p2Wins = 0;
     private int currentRound = 1;
@@ -28,12 +33,19 @@ public class RoundTimer : MonoBehaviour
     public Health player1Health;
     public Health player2Health;
 
-
-    //place to respawn players after round ends
+    // Place to respawn players after round ends
     public Transform p1StartPoint;
     public Transform p2StartPoint;
+
     private float currentTime;
     private bool isRunning = false;
+
+    void Start()
+    {
+        currentTime = maxTime;
+        UpdateScoreUI(); // Initialize scores to 0 at start
+        StartCoroutine(StartFirstRoundDelay());
+    }
 
     IEnumerator StartFirstRoundDelay()
     {
@@ -42,16 +54,8 @@ public class RoundTimer : MonoBehaviour
         {
             fightIntro.PlayIntroSequence(currentRound);
             isRunning = true;
-
         }
     }
-
-    void Start()
-    {
-        currentTime = maxTime;
-        StartCoroutine(StartFirstRoundDelay());
-    }
-
 
     void Update()
     {
@@ -80,14 +84,19 @@ public class RoundTimer : MonoBehaviour
         int tens = time / 10;
         int ones = time % 10;
 
-        tensImage.sprite = numberSprites[tens];
-        onesImage.sprite = numberSprites[ones];
+        if (tensImage != null) tensImage.sprite = numberSprites[tens];
+        if (onesImage != null) onesImage.sprite = numberSprites[ones];
+    }
+
+    void UpdateScoreUI()
+    {
+        if (p1ScoreText != null) p1ScoreText.text = p1Wins.ToString();
+        if (p2ScoreText != null) p2ScoreText.text = p2Wins.ToString();
     }
 
     void TimeUp()
     {
         Debug.Log("TIME OVER");
-
 
         if (player1Health.CurrentHealth > player2Health.CurrentHealth)
         {
@@ -95,34 +104,33 @@ public class RoundTimer : MonoBehaviour
         }
         else if (player2Health.CurrentHealth > player1Health.CurrentHealth)
         {
-            RoundOver(1);
+            RoundOver(2);
         }
         else
         {
-
             if (lastHitter == 1) RoundOver(1);
             else if (lastHitter == 2) RoundOver(2);
             else RoundOver(1);
         }
     }
-    void Win(int playerIndex)
-    {
-        RoundOver(playerIndex);
-    }
 
-
-    // wins method
     public void RoundOver(int winnerIndex)
     {
-        if (!isRunning) return; 
+        // Safety check to prevent multiple triggers
+        if (!isRunning && currentTime > 0) return;
+
         isRunning = false;
 
         Debug.Log($"Round Over! Winner: Player {winnerIndex}");
 
-        //
+        // Increment wins
         if (winnerIndex == 1) p1Wins++;
         else if (winnerIndex == 2) p2Wins++;
 
+        // Update the UI immediately
+        UpdateScoreUI();
+
+        // Trigger animations
         if (winnerIndex == 1)
         {
             player1Health.playerController.WinGame();
@@ -137,15 +145,14 @@ public class RoundTimer : MonoBehaviour
         StartCoroutine(NextRoundRoutine());
     }
 
-    //Coroutine
-    System.Collections.IEnumerator NextRoundRoutine()
+    IEnumerator NextRoundRoutine()
     {
-        // timer before next round
         yield return new WaitForSeconds(5f);
 
         if (p1Wins >= roundsToWin || p2Wins >= roundsToWin)
         {
             Debug.Log("GAME OVER! MATCH FINISHED");
+            // You could load a Victory Scene here
         }
         else
         {
@@ -156,31 +163,29 @@ public class RoundTimer : MonoBehaviour
     void ResetRound()
     {
         Debug.Log("Starting Next Round...");
-
         currentRound++;
 
-        // reset timer
         currentTime = maxTime;
         isRunning = true;
 
-        // back to positions
+        // Reset positions
         player1Health.transform.position = p1StartPoint.position;
         player2Health.transform.position = p2StartPoint.position;
 
-        // heal
+        // Reset health and enable scripts
         player1Health.CurrentHealth = player1Health.maxHealth;
         player2Health.CurrentHealth = player2Health.maxHealth;
 
         player1Health.enabled = true;
         player2Health.enabled = true;
 
-        //reset anim
+        // Reset animations
         player1Health.playerController.ResetState();
         player2Health.playerController.ResetState();
 
         if (fightIntro != null)
         {
-            fightIntro.PlayIntroSequence(currentRound); 
+            fightIntro.PlayIntroSequence(currentRound);
         }
     }
 }
