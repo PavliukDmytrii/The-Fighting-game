@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Sounds
 {
     [Header("Movement Settings")]
     public float moveSpeed = 7f;
@@ -341,6 +341,9 @@ public void WinGame()
                     enemy.GetComponent<Health>().TakeDamage(attackDamage);
                 }
             }
+            int index = Random.Range(0,2);
+            Playsound(sounds[index]);
+             
         }
     }
 
