@@ -595,7 +595,7 @@ Transform:
   m_GameObject: {fileID: 191936300}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.434, y: 0.146, z: 0}
+  m_LocalPosition: {x: -0.434, y: 0.293, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -794,15 +794,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 3
-  jumpForce: 3.5
+  jumpForce: 4.35
   jumpCooldown: 0.2
   ryuVictoryHeight: 0.15
   ryuDefeatHeight: -0.275
   deeJayVictoryHeight: 0
   deeJayDefeatHeight: 0
   attackDuration: 0.8
-  attackDamage: 20
-  attackRange: 0.5
+  attackCooldown: 1
+  attackDamage: 10
+  attackRange: 0.2
   attackPoint: {fileID: 191936301}
   enemyLayers:
     serializedVersion: 2
@@ -2075,7 +2076,7 @@ Transform:
   m_GameObject: {fileID: 1390155337}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.532, y: 0.241, z: 0}
+  m_LocalPosition: {x: 0.532, y: 0.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2965,15 +2966,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 3
-  jumpForce: 3.5
+  jumpForce: 4.35
   jumpCooldown: 0.2
   ryuVictoryHeight: 0
   ryuDefeatHeight: 0
   deeJayVictoryHeight: 0.05
   deeJayDefeatHeight: -0.275
   attackDuration: 0.8
-  attackDamage: 20
-  attackRange: 0.5
+  attackCooldown: 0.5
+  attackDamage: 10
+  attackRange: 0.2
   attackPoint: {fileID: 1390155338}
   enemyLayers:
     serializedVersion: 2

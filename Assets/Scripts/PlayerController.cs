@@ -18,8 +18,9 @@ public class PlayerController : MonoBehaviour
     public float deeJayDefeatHeight = 0f;
     [Header("Combat Settings")]
     public float attackDuration = 0.3f;
+    public float attackCooldown = 1f;
     public int attackDamage = 20;
-    public float attackRange = 0.5f;
+    public float attackRange = 0.2f;
     public Transform attackPoint;
     public LayerMask enemyLayers;
 
@@ -50,8 +51,9 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight = true; 
     private bool canJump = true; 
     private bool isCrouching = false;
-    private bool isAttacking = false; // <-- NEW: Tracks if we are attacking
-    
+    private bool isAttacking = false;
+    private bool canAttack = true;
+
     // PUBLIC variables
     public bool isBlocking = false; 
     public bool isLockControl = false; 
@@ -322,12 +324,14 @@ public void WinGame()
     private void OnAttack(InputAction.CallbackContext context)
     {
         // Cannot attack if already attacking
-        if (anim != null && !isCrouching && isGrounded && !isBlocking && !isLockControl && !isAttacking)
+        if (anim != null && !isCrouching && isGrounded && !isBlocking && !isLockControl && !isAttacking && canAttack)
         {
             anim.SetTrigger("Attack");
 
             // --- NEW: Start the freeze timer ---
             StartCoroutine(AttackMovementLock());
+
+            StartCoroutine(AttackCooldownRoutine());
 
             if (attackPoint != null)
             {
@@ -360,6 +364,13 @@ public void WinGame()
         canJump = true;
     }
 
+    private IEnumerator AttackCooldownRoutine()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
+
 
     public void ResetState()
     {
@@ -387,6 +398,7 @@ public void WinGame()
         isCrouching = false;
         isBlocking = false;
         isAttacking = false;
+        canAttack = true;
         StopAllCoroutines(); 
     }
 }
