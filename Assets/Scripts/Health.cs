@@ -2,7 +2,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Health : MonoBehaviour
+public class Health : Sounds
 {
     public int maxHealth = 100;
     private int _currentHealth;
@@ -20,6 +20,7 @@ public class Health : MonoBehaviour
             if (_currentHealth <= 0)
             {
                 Die();
+             
             }
         }
     }
@@ -79,5 +80,6 @@ public class Health : MonoBehaviour
             else
                 timer.RoundOver(1);
         }
+                 
     }
 }

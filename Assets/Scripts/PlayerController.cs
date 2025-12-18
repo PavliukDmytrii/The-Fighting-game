@@ -318,6 +318,7 @@ public void WinGame()
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             canJump = false; 
             StartCoroutine(JumpCooldown()); 
+            Playsound(sounds[2]);
         }
     }
 
