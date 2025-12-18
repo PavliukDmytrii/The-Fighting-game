@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-using UnityEngine.SceneManagement; // Required for scene loading
+using UnityEngine.SceneManagement;
 
 public class RoundTimer : MonoBehaviour
 {
@@ -47,7 +47,6 @@ public class RoundTimer : MonoBehaviour
 
     void Start()
     {
-        // Ensure photos are hidden at start
         if (timeOverPhoto) timeOverPhoto.SetActive(false);
         if (gameOverPhoto) gameOverPhoto.SetActive(false);
         if (continueButton) continueButton.SetActive(false);
@@ -105,7 +104,7 @@ public class RoundTimer : MonoBehaviour
     void TimeUp()
     {
         Debug.Log("TIME OVER");
-        // Show Time Over photo immediately
+
         if (timeOverPhoto != null) timeOverPhoto.SetActive(true);
 
         if (player1Health.CurrentHealth > player2Health.CurrentHealth)
@@ -127,7 +126,7 @@ public class RoundTimer : MonoBehaviour
 
         UpdateScoreUI();
 
-        // Trigger animations
+
         if (winnerIndex == 1)
         {
             player1Health.playerController.WinGame();
@@ -138,8 +137,6 @@ public class RoundTimer : MonoBehaviour
             player2Health.playerController.WinGame();
             player1Health.playerController.LoseGame();
         }
-
-        // Check for Match Win immediately
         if (p1Wins >= roundsToWin || p2Wins >= roundsToWin)
         {
             if (gameOverPhoto != null) gameOverPhoto.SetActive(true);
@@ -153,9 +150,9 @@ public class RoundTimer : MonoBehaviour
 
     IEnumerator ShowContinueDelay()
     {
-        yield return new WaitForSeconds(3f); // Wait with Game Over on screen
-        if (gameOverPhoto != null) gameOverPhoto.SetActive(false); // Hide Game Over
-        if (continueButton != null) continueButton.SetActive(true); // Show Continue Button
+        yield return new WaitForSeconds(3f);
+        if (gameOverPhoto != null) gameOverPhoto.SetActive(false); 
+        if (continueButton != null) continueButton.SetActive(true); 
     }
 
     IEnumerator NextRoundRoutine()
@@ -184,7 +181,6 @@ public class RoundTimer : MonoBehaviour
             fightIntro.PlayIntroSequence(currentRound);
     }
 
-    // Button function to return to main menu
     public void LoadMainMenu()
     {
         SceneManager.LoadScene("MainMenu");

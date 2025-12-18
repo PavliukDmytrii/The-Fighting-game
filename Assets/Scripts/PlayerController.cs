@@ -206,15 +206,16 @@ public void WinGame()
         {
             anim.SetTrigger("Victory");
         }
-
         if (spriteVisualsTransform != null)
         {
             if (playerIndex == 0)
             {
+                Playsound(sounds[3]);
                 spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, ryuVictoryHeight, originalSpritePosition.z);
             }
             else if (playerIndex == 1)
             {
+                Playsound(sounds[4]);
                 spriteVisualsTransform.localPosition = new Vector3(originalSpritePosition.x, deeJayVictoryHeight, originalSpritePosition.z);
             }
         }

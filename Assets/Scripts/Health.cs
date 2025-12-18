@@ -2,7 +2,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Health : Sounds
+public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
     private int _currentHealth;
