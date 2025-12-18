@@ -1,24 +1,30 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using TMPro; // Required for the Score Text
+using TMPro;
+using UnityEngine.SceneManagement; // Required for scene loading
 
 public class RoundTimer : MonoBehaviour
 {
     [Header("UI References")]
-    public Sprite[] numberSprites; // 0-9 images
+    public Sprite[] numberSprites;
     public Image tensImage;
     public Image onesImage;
 
+    [Header("End Game Photos")]
+    public GameObject timeOverPhoto;
+    public GameObject gameOverPhoto;
+    public GameObject continueButton;
+
     [Header("Score UI")]
-    public TextMeshProUGUI p1ScoreText; // Assign your Player 1 Score Text here
-    public TextMeshProUGUI p2ScoreText; // Assign your Player 2 Score Text here
+    public TextMeshProUGUI p1ScoreText;
+    public TextMeshProUGUI p2ScoreText;
 
     [Header("Intro Reference")]
     public FightIntro fightIntro;
 
     [Header("Round Settings")]
-    public int roundsToWin = 2; // 2 out of 3
+    public int roundsToWin = 2;
     private int p1Wins = 0;
     private int p2Wins = 0;
     private int currentRound = 1;
@@ -27,13 +33,12 @@ public class RoundTimer : MonoBehaviour
     public float maxTime = 90f;
 
     [HideInInspector]
-    public int lastHitter = 0; // 0 = none, 1 = player1, 2 = player2
+    public int lastHitter = 0;
 
     [Header("Players")]
     public Health player1Health;
     public Health player2Health;
 
-    // Place to respawn players after round ends
     public Transform p1StartPoint;
     public Transform p2StartPoint;
 
@@ -42,8 +47,13 @@ public class RoundTimer : MonoBehaviour
 
     void Start()
     {
+        // Ensure photos are hidden at start
+        if (timeOverPhoto) timeOverPhoto.SetActive(false);
+        if (gameOverPhoto) gameOverPhoto.SetActive(false);
+        if (continueButton) continueButton.SetActive(false);
+
         currentTime = maxTime;
-        UpdateScoreUI(); // Initialize scores to 0 at start
+        UpdateScoreUI();
         StartCoroutine(StartFirstRoundDelay());
     }
 
@@ -76,8 +86,6 @@ public class RoundTimer : MonoBehaviour
     void UpdateTimerDisplay()
     {
         int time = Mathf.CeilToInt(currentTime);
-
-        // Prevent index out of range
         if (time < 0) time = 0;
         if (time > 99) time = 99;
 
@@ -97,37 +105,26 @@ public class RoundTimer : MonoBehaviour
     void TimeUp()
     {
         Debug.Log("TIME OVER");
+        // Show Time Over photo immediately
+        if (timeOverPhoto != null) timeOverPhoto.SetActive(true);
 
         if (player1Health.CurrentHealth > player2Health.CurrentHealth)
-        {
             RoundOver(1);
-        }
         else if (player2Health.CurrentHealth > player1Health.CurrentHealth)
-        {
             RoundOver(2);
-        }
         else
-        {
-            if (lastHitter == 1) RoundOver(1);
-            else if (lastHitter == 2) RoundOver(2);
-            else RoundOver(1);
-        }
+            RoundOver(lastHitter == 2 ? 2 : 1);
     }
 
     public void RoundOver(int winnerIndex)
     {
-        // Safety check to prevent multiple triggers
         if (!isRunning && currentTime > 0) return;
 
         isRunning = false;
 
-        Debug.Log($"Round Over! Winner: Player {winnerIndex}");
-
-        // Increment wins
         if (winnerIndex == 1) p1Wins++;
         else if (winnerIndex == 2) p2Wins++;
 
-        // Update the UI immediately
         UpdateScoreUI();
 
         // Trigger animations
@@ -142,50 +139,54 @@ public class RoundTimer : MonoBehaviour
             player1Health.playerController.LoseGame();
         }
 
-        StartCoroutine(NextRoundRoutine());
+        // Check for Match Win immediately
+        if (p1Wins >= roundsToWin || p2Wins >= roundsToWin)
+        {
+            if (gameOverPhoto != null) gameOverPhoto.SetActive(true);
+            StartCoroutine(ShowContinueDelay());
+        }
+        else
+        {
+            StartCoroutine(NextRoundRoutine());
+        }
+    }
+
+    IEnumerator ShowContinueDelay()
+    {
+        yield return new WaitForSeconds(3f); // Wait with Game Over on screen
+        if (gameOverPhoto != null) gameOverPhoto.SetActive(false); // Hide Game Over
+        if (continueButton != null) continueButton.SetActive(true); // Show Continue Button
     }
 
     IEnumerator NextRoundRoutine()
     {
         yield return new WaitForSeconds(5f);
-
-        if (p1Wins >= roundsToWin || p2Wins >= roundsToWin)
-        {
-            Debug.Log("GAME OVER! MATCH FINISHED");
-            // You could load a Victory Scene here
-        }
-        else
-        {
-            ResetRound();
-        }
+        if (timeOverPhoto != null) timeOverPhoto.SetActive(false);
+        ResetRound();
     }
 
     void ResetRound()
     {
-        Debug.Log("Starting Next Round...");
         currentRound++;
-
         currentTime = maxTime;
         isRunning = true;
 
-        // Reset positions
         player1Health.transform.position = p1StartPoint.position;
         player2Health.transform.position = p2StartPoint.position;
-
-        // Reset health and enable scripts
         player1Health.CurrentHealth = player1Health.maxHealth;
         player2Health.CurrentHealth = player2Health.maxHealth;
-
         player1Health.enabled = true;
         player2Health.enabled = true;
-
-        // Reset animations
         player1Health.playerController.ResetState();
         player2Health.playerController.ResetState();
 
         if (fightIntro != null)
-        {
             fightIntro.PlayIntroSequence(currentRound);
-        }
+    }
+
+    // Button function to return to main menu
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
